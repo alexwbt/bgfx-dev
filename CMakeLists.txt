@@ -9,3 +9,4 @@ add_subdirectory(_external/glfw)
 add_subdirectory(_external/bgfx.cmake)
 
 add_subdirectory(bgfx-helloworld)
+add_subdirectory(playground)
