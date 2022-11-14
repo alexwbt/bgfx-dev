@@ -84,6 +84,16 @@
         "xstring": "cpp",
         "xtr1common": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "*.inc": "cpp"
     },
+    "cSpell.words": [
+        "backbuffer",
+        "bgfx",
+        "framebuffer",
+        "glfw",
+        "vsync"
+    ],
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
 }

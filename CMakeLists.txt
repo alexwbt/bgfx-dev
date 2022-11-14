@@ -8,5 +8,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/_bin)
 add_subdirectory(_external/glfw)
 add_subdirectory(_external/bgfx.cmake)
 
+add_subdirectory(axgl)
+
 add_subdirectory(bgfx-helloworld)
 add_subdirectory(playground)

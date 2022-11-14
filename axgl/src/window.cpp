@@ -1,4 +1,4 @@
-#include "window.h"
+#include "axgl/window.h"
 
 #include <iostream>
 #include <GLFW/glfw3.h>
@@ -8,7 +8,6 @@ namespace gl
 
     bool Window::initialized_ = false;
     bool Window::terminated_ = false;
-    bool Window::initialized_glad_ = false;
 
     std::unordered_map<GLFWwindow*, Window*> Window::windows_;
 
@@ -21,8 +20,6 @@ namespace gl
 
         if (!glfwInit())
             throw std::runtime_error("Failed to initialize GLFW.");
-
-        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
         initialized_ = true;
     }
