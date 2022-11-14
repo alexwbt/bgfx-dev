@@ -14,6 +14,7 @@ target_include_directories(axgl
     bimg/include
     bx/include
     glfw/include
+
     PUBLIC
     ./include
 )

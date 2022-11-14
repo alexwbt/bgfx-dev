@@ -5,9 +5,8 @@
 
 namespace gl
 {
-    class EventLoop
+    namespace event
     {
-    public:
         struct Component
         {
             virtual ~Component() {}
@@ -17,12 +16,19 @@ namespace gl
             virtual bool alive() { return true; }
         };
 
-    private:
-        std::vector<std::shared_ptr<Component>> components_;
+        class EventLoop : public Component
+        {
+            std::vector<std::shared_ptr<Component>> components_;
 
-    public:
-        void add_component(std::shared_ptr<Component> component);
+        public:
+            void add_component(std::shared_ptr<Component> component);
 
-        void run();
-    };
+            void initialize() override;
+            void terminate() override;
+            void update() override;
+            bool alive() override;
+
+            void run();
+        };
+    }
 }

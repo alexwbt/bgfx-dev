@@ -3,7 +3,7 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
-namespace gl
+namespace glfw
 {
 
     bool Window::initialized_ = false;

@@ -6,7 +6,7 @@
 
 struct GLFWwindow;
 
-namespace gl
+namespace glfw
 {
     class Window final
     {

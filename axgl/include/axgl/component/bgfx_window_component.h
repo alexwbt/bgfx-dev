@@ -7,10 +7,10 @@
 
 namespace gl
 {
-    class BgfxWindowComponent : public EventLoop::Component
+    class BgfxWindowComponent : public event::Component
     {
     private:
-        std::shared_ptr<Window> window_;
+        std::shared_ptr<glfw::Window> window_;
 
         const uint32_t width_;
         const uint32_t height_;
