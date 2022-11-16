@@ -3,9 +3,11 @@ add_library(axgl)
 
 target_sources(axgl
     PRIVATE
+    ./src/core.cpp
     ./src/window.cpp
-    ./src/event_loop.cpp
-    ./src/component/bgfx_window_component.cpp
+
+    ./src/component/glfw.cpp
+    ./src/component/bgfx.cpp
 )
 
 target_include_directories(axgl

@@ -52,6 +52,7 @@ namespace glfw
         void set_title(const std::string& title);
 
         GLFWwindow* get_glfw_window() const;
+        bool is_destroyed() const { return destroyed_; }
 
     private:
         // void Render();

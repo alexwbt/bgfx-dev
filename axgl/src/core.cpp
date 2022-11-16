@@ -1,35 +1,35 @@
-#include "axgl/event_loop.h"
+#include "axgl/core.h"
 
 namespace gl
 {
-    namespace event
+    namespace core
     {
 
-        void EventLoop::add_component(std::shared_ptr<Component> component)
+        void Core::add_component(std::shared_ptr<Component> component)
         {
             components_.push_back(std::move(component));
         }
 
-        void EventLoop::initialize()
+        void Core::initialize()
         {
             for (const auto& component : components_)
                 component->initialize();
         }
 
-        void EventLoop::terminate()
+        void Core::terminate()
         {
             for (auto it = components_.rbegin(); it != components_.rend(); ++it)
                 (*it)->terminate();
         }
 
-        void EventLoop::update()
+        void Core::update()
         {
             for (const auto& component : components_)
                 if (component->alive())
                     component->update();
         }
 
-        bool EventLoop::alive()
+        bool Core::alive()
         {
             for (const auto& component : components_)
                 if (component->alive())
@@ -37,7 +37,7 @@ namespace gl
             return false;
         }
 
-        void EventLoop::run()
+        void Core::run()
         {
             initialize();
 

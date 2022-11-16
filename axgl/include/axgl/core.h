@@ -5,7 +5,7 @@
 
 namespace gl
 {
-    namespace event
+    namespace core
     {
         struct Component
         {
@@ -13,10 +13,10 @@ namespace gl
             virtual void initialize() {}
             virtual void terminate() {}
             virtual void update() {}
-            virtual bool alive() { return true; }
+            virtual bool alive() { return false; }
         };
 
-        class EventLoop : public Component
+        class Core : public Component
         {
             std::vector<std::shared_ptr<Component>> components_;
 
