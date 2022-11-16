@@ -42,9 +42,7 @@ namespace gl
             initialize();
 
             while (alive())
-            {
                 update();
-            }
 
             terminate();
         }

@@ -6,6 +6,8 @@ target_sources(axgl
     ./src/core.cpp
     ./src/window.cpp
 
+    ./src/model/shader_program.cpp
+
     ./src/component/glfw.cpp
     ./src/component/bgfx.cpp
 )

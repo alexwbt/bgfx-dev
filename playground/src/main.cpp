@@ -4,10 +4,10 @@
 
 #include <bgfx/bgfx.h>
 
-class Game : public gl::BgfxComponent
+class Playground : public gl::BgfxComponent
 {
 public:
-    Game() : gl::BgfxComponent(800, 600, "Hello BGFX!") {}
+    Playground() : gl::BgfxComponent(800, 600, "Hello BGFX!") {}
 
     void initialize() override
     {
@@ -26,13 +26,15 @@ public:
     }
 };
 
+#include <iostream>
+
 int main()
 {
     auto glfw = std::make_shared<gl::GlfwComponent>();
-    auto game = std::make_shared<Game>();
+    auto playground = std::make_shared<Playground>();
 
     gl::core::Core core;
     core.add_component(glfw);
-    core.add_component(game);
+    core.add_component(playground);
     core.run();
 }
