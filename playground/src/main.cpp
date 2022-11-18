@@ -6,6 +6,8 @@
 
 class Playground : public gl::BgfxComponent
 {
+    // std::shared_ptr<
+
 public:
     Playground() : gl::BgfxComponent(800, 600, "Hello BGFX!") {}
 
@@ -25,8 +27,6 @@ public:
         bgfx::frame();
     }
 };
-
-#include <iostream>
 
 int main()
 {
