@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <bgfx/bgfx.h>
+#include <bx/math.h>
 
 #include "axgl/model/shader_program.h"
 
@@ -19,8 +20,7 @@ namespace gl
     public:
         template<
             typename _ShaderProgram,
-            std::enable_if_t<std::is_base_of<ShaderProgram, _ShaderProgram>::value>
-        >
+            std::enable_if_t<std::is_base_of_v<ShaderProgram, _ShaderProgram>, bool> = true>
         Mesh(
             std::shared_ptr<_ShaderProgram> shader,
             const std::vector<typename _ShaderProgram::Vertex>& vertices,
@@ -35,5 +35,29 @@ namespace gl
             index_buffer_(bgfx::createIndexBuffer(
                 bgfx::copy(&indices[0], indices.size())))
         {}
+
+        void test()
+        {
+            float mtx[16];
+            bx::mtxRotateY(mtx, 0.0f);
+
+            // position x,y,z
+            mtx[12] = 0.0f;
+            mtx[13] = 0.0f;
+            mtx[14] = 0.0f;
+
+            // Set model matrix for rendering.
+            bgfx::setTransform(mtx);
+
+            // Set vertex and index buffer.
+            bgfx::setVertexBuffer(0, vertex_buffer_);
+            bgfx::setIndexBuffer(index_buffer_);
+
+            // Set render states.
+            bgfx::setState(BGFX_STATE_DEFAULT);
+
+            // Submit primitive for rendering to view 0.
+            bgfx::submit(0, shader_->get_program());
+        }
     };
 }

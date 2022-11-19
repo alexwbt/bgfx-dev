@@ -9,7 +9,7 @@ namespace gl
     class ShaderProgram
     {
     public:
-        static const bgfx::ShaderHandle load_shader(const std::string& file);
+        static const bgfx::ShaderHandle load_shader(const std::string& name);
 
     private:
         bgfx::ProgramHandle program_;
