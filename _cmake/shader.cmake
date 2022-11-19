@@ -194,21 +194,21 @@ function(bgfx_dev_add_shader FILE FOLDER)
     endif()
 
     if(NOT "${TYPE}" STREQUAL "")
-        set(COMMON_ARGS FILE ${FOLDER}/${FILE} ${TYPE} INCLUDES ${FOLDER};${BGFX_DIR}/src VERBOSE)
+        set(COMMON_ARGS FILE ${FOLDER}/${FILE} ${TYPE} INCLUDES ${FOLDER};${BGFX_DIR}/src)
         set(OUTPUTS "")
         set(OUTPUTS_PRETTY "")
 
         if(WIN32)
             # dx9
             if(NOT "${TYPE}" STREQUAL "COMPUTE")
-                set(DX9_OUTPUT ${SHADER_RUNTIME_OUTPUT_DIRECTORY}/dx9/${FILENAME}.bin)
+                set(DX9_OUTPUT ${SHADER_RUNTIME_OUTPUT_DIRECTORY}/dx9_${FILENAME}.bin)
                 bgfx_dev_shaderc_parse(DX9 ${COMMON_ARGS} WINDOWS PROFILE ${D3D_PREFIX}_3_0 O 3 OUTPUT ${DX9_OUTPUT})
                 list(APPEND OUTPUTS "DX9")
                 set(OUTPUTS_PRETTY "${OUTPUTS_PRETTY}DX9, ")
             endif()
 
             # dx11
-            set(DX11_OUTPUT ${SHADER_RUNTIME_OUTPUT_DIRECTORY}/dx11/${FILENAME}.bin)
+            set(DX11_OUTPUT ${SHADER_RUNTIME_OUTPUT_DIRECTORY}/dx11_${FILENAME}.bin)
 
             if(NOT "${TYPE}" STREQUAL "COMPUTE")
                 bgfx_dev_shaderc_parse(DX11 ${COMMON_ARGS} WINDOWS PROFILE ${D3D_PREFIX}_5_0 O 3 OUTPUT ${DX11_OUTPUT})
@@ -222,7 +222,7 @@ function(bgfx_dev_add_shader FILE FOLDER)
 
         if(APPLE)
             # metal
-            set(METAL_OUTPUT ${SHADER_RUNTIME_OUTPUT_DIRECTORY}/metal/${FILENAME}.bin)
+            set(METAL_OUTPUT ${SHADER_RUNTIME_OUTPUT_DIRECTORY}/metal_${FILENAME}.bin)
             bgfx_dev_shaderc_parse(METAL ${COMMON_ARGS} OSX PROFILE metal OUTPUT ${METAL_OUTPUT})
             list(APPEND OUTPUTS "METAL")
             set(OUTPUTS_PRETTY "${OUTPUTS_PRETTY}Metal, ")
@@ -230,14 +230,14 @@ function(bgfx_dev_add_shader FILE FOLDER)
 
         # essl
         if(NOT "${TYPE}" STREQUAL "COMPUTE")
-            set(ESSL_OUTPUT ${SHADER_RUNTIME_OUTPUT_DIRECTORY}/essl/${FILENAME}.bin)
+            set(ESSL_OUTPUT ${SHADER_RUNTIME_OUTPUT_DIRECTORY}/essl_${FILENAME}.bin)
             bgfx_dev_shaderc_parse(ESSL ${COMMON_ARGS} ANDROID OUTPUT ${ESSL_OUTPUT})
             list(APPEND OUTPUTS "ESSL")
             set(OUTPUTS_PRETTY "${OUTPUTS_PRETTY}ESSL, ")
         endif()
 
         # glsl
-        set(GLSL_OUTPUT ${SHADER_RUNTIME_OUTPUT_DIRECTORY}/glsl/${FILENAME}.bin)
+        set(GLSL_OUTPUT ${SHADER_RUNTIME_OUTPUT_DIRECTORY}/glsl_${FILENAME}.bin)
 
         if(NOT "${TYPE}" STREQUAL "COMPUTE")
             bgfx_dev_shaderc_parse(GLSL ${COMMON_ARGS} LINUX PROFILE 120 OUTPUT ${GLSL_OUTPUT})
@@ -250,7 +250,7 @@ function(bgfx_dev_add_shader FILE FOLDER)
 
         # spirv
         if(NOT "${TYPE}" STREQUAL "COMPUTE")
-            set(SPIRV_OUTPUT ${SHADER_RUNTIME_OUTPUT_DIRECTORY}/spirv/${FILENAME}.bin)
+            set(SPIRV_OUTPUT ${SHADER_RUNTIME_OUTPUT_DIRECTORY}/spirv_${FILENAME}.bin)
             bgfx_dev_shaderc_parse(SPIRV ${COMMON_ARGS} LINUX PROFILE spirv OUTPUT ${SPIRV_OUTPUT})
             list(APPEND OUTPUTS "SPIRV")
             set(OUTPUTS_PRETTY "${OUTPUTS_PRETTY}SPIRV")
@@ -261,8 +261,8 @@ function(bgfx_dev_add_shader FILE FOLDER)
         foreach(OUT ${OUTPUTS})
             list(APPEND OUTPUT_FILES ${${OUT}_OUTPUT})
             list(APPEND COMMANDS COMMAND "$<TARGET_FILE:shaderc>" ${${OUT}})
-            get_filename_component(OUT_DIR ${${OUT}_OUTPUT} DIRECTORY)
-            file(MAKE_DIRECTORY ${OUT_DIR})
+            # get_filename_component(OUT_DIR ${${OUT}_OUTPUT} DIRECTORY)
+            # file(MAKE_DIRECTORY ${OUT_DIR})
         endforeach()
 
         file(RELATIVE_PATH PRINT_NAME ${CMAKE_SOURCE_DIR} ${FOLDER}/${FILE})
