@@ -13,6 +13,7 @@ class Playground : public gl::BgfxComponent
 {
     std::shared_ptr<gl::Mesh> cube;
     gl::Camera camera;
+    int counter = 0;
 
 public:
     Playground() : gl::BgfxComponent(800, 600, "Hello BGFX!") {}
@@ -34,30 +35,22 @@ public:
     {
         gl::BgfxComponent::update();
 
-        // inside the while loop
+        bgfx::touch(0);
 
-        const bx::Vec3 at = { 0.0f, 0.0f,   0.0f };
-        const bx::Vec3 eye = { 0.0f, 0.0f, 10.0f };
-
-        // Set view and projection matrix for view 0.
+        const bx::Vec3 at = { 0.0f, 0.0f,  0.0f };
+        const bx::Vec3 eye = { 0.0f, 0.0f, -5.0f };
         float view[16];
         bx::mtxLookAt(view, eye, at);
-
         float proj[16];
-        bx::mtxProj(proj,
-            60.0f,
-            float(800) / float(600),
-            0.1f, 100.0f,
-            bgfx::getCaps()->homogeneousDepth);
-
+        bx::mtxProj(proj, 60.0f, float(800) / float(600), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
         bgfx::setViewTransform(0, view, proj);
 
-        // Set view 0 default viewport.
-        bgfx::setViewRect(0, 0, 0, 800, 600);
-
+        float mtx[16];
+        ++counter;
+        bx::mtxRotateXY(mtx, counter * 0.01f, counter * 0.01f);
+        bgfx::setTransform(mtx);  
         cube->test();
 
-        bgfx::touch(0);
         bgfx::frame();
     }
 };

@@ -194,7 +194,7 @@ function(bgfx_dev_add_shader FILE FOLDER)
     endif()
 
     if(NOT "${TYPE}" STREQUAL "")
-        set(COMMON_ARGS FILE ${FOLDER}/${FILE} ${TYPE} INCLUDES ${FOLDER};${BGFX_DIR}/src)
+        set(COMMON_ARGS FILE ${FILE} ${TYPE} INCLUDES ${FOLDER};${BGFX_DIR}/src)
         set(OUTPUTS "")
         set(OUTPUTS_PRETTY "")
 
@@ -265,14 +265,22 @@ function(bgfx_dev_add_shader FILE FOLDER)
             # file(MAKE_DIRECTORY ${OUT_DIR})
         endforeach()
 
-        file(RELATIVE_PATH PRINT_NAME ${CMAKE_SOURCE_DIR} ${FOLDER}/${FILE})
+        file(RELATIVE_PATH PRINT_NAME ${CMAKE_SOURCE_DIR} ${FILE})
         add_custom_command(
             MAIN_DEPENDENCY
-            ${FOLDER}/${FILE}
+            ${FILE}
             OUTPUT
             ${OUTPUT_FILES}
             ${COMMANDS}
             COMMENT "Compiling shader ${PRINT_NAME} for ${OUTPUTS_PRETTY}"
         )
     endif()
+endfunction()
+
+function(bgfx_dev_add_shader_dir FOLDER)
+    file(GLOB files "${FOLDER}/*.sc")
+    source_group("Shader Files" FILES ${files})
+    foreach(file ${files})
+        bgfx_dev_add_shader(${file} ${FOLDER})
+    endforeach()
 endfunction()
