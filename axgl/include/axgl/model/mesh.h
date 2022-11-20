@@ -28,7 +28,7 @@ namespace gl
         ) :
             shader_(shader),
             vertex_buffer_(bgfx::createVertexBuffer(
-                bgfx::copy(&vertices[0], vertices.size() * sizeof(_ShaderProgram::Vertex)),
+                bgfx::copy(&vertices[0], vertices.size() * sizeof(typename _ShaderProgram::Vertex)),
                 shader->get_layout())),
             index_buffer_(bgfx::createIndexBuffer(
                 bgfx::copy(&indices[0], indices.size() * sizeof(uint16_t))))
