@@ -14,25 +14,30 @@ namespace comp
 {
     class BgfxComponent : public Component
     {
+    public:
+        class Adapter : public Component, public glfw::Window::EventListener
+        {};
+
     private:
         uint32_t width_;
         uint32_t height_;
         const std::string title_;
-
+        std::shared_ptr<Adapter> adapter_;
         std::shared_ptr<glfw::Window> window_;
 
     public:
-        BgfxComponent(uint32_t width, uint32_t height, const std::string& title);
+        BgfxComponent(
+            uint32_t width,
+            uint32_t height,
+            const std::string& title,
+            std::shared_ptr<Adapter> adapter
+        );
+        virtual ~BgfxComponent() {}
 
         void initialize() override;
         void terminate() override;
         void update() override;
         bool alive() override;
-
-    protected:
-        uint32_t width() { return width_; }
-        uint32_t height() { return height_; }
-        std::shared_ptr<const glfw::Window> window() { return window_; }
     };
 }
 

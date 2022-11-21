@@ -23,9 +23,17 @@ NAMESPACE_EVENT
 namespace comp
 {
 
-    BgfxComponent::BgfxComponent(uint32_t width, uint32_t height, const std::string& title)
-        : width_(width), height_(height), title_(title) {}
-
+    BgfxComponent::BgfxComponent(
+        uint32_t width,
+        uint32_t height,
+        const std::string& title,
+        std::shared_ptr<Adapter> adapter
+    ) :
+        width_(width),
+        height_(height),
+        title_(title),
+        adapter_(std::move(adapter))
+    {}
 
     void BgfxComponent::initialize()
     {
@@ -52,19 +60,26 @@ namespace comp
 
         if (!bgfx::init(init))
             throw std::runtime_error("Failed to initialize bgfx.");
+
+        window_->set_event_listener(adapter_);
+        adapter_->initialize();
+        adapter_->on_resize(width_, height_);
     }
 
     void BgfxComponent::terminate()
     {
+        adapter_->terminate();
         bgfx::shutdown();
     }
 
     void BgfxComponent::update()
-    {}
+    {
+        adapter_->update();
+    }
 
     bool BgfxComponent::alive()
     {
-        return !window_->is_destroyed();
+        return adapter_->alive() || !window_->is_destroyed();
     }
 
 }

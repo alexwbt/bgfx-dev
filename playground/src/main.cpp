@@ -12,36 +12,34 @@
 
 #include "data.h"
 
-class Playground : public gl::event::comp::BgfxComponent
+class Playground : public gl::event::comp::BgfxComponent::Adapter
 {
-    std::shared_ptr<gl::render::Mesh> cube;
-    gl::render::Camera camera;
+private:
     int counter = 0;
 
-public:
-    Playground() : gl::event::comp::BgfxComponent(800, 600, "Hello BGFX!") {}
+    gl::render::Camera camera_;
 
+    std::shared_ptr<gl::render::Mesh> cube_;
+
+    uint32_t width_ = 0, height_ = 0;
+
+public:
     void initialize() override
     {
-        gl::event::comp::BgfxComponent::initialize();
-
         bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x443355FF, 1.0f, 0);
-        bgfx::setViewRect(0, 0, 0, bgfx::BackbufferRatio::Equal);
 
         auto shader = std::make_shared<gl::render::shader::PC>();
-        cube = std::make_shared<gl::render::Mesh>(shader, cube_vertices, cube_indices);
+        cube_ = std::make_shared<gl::render::Mesh>(shader, cube_vertices, cube_indices);
 
-        camera.position = { -5.0f , 0.0f , 0.0f };
+        camera_.position = { -5.0f , 0.0f , 0.0f };
     }
 
     void update() override
     {
-        gl::event::comp::BgfxComponent::update();
+        gl::render::RenderContext context{ width_, height_, 0 };
 
-        gl::render::RenderContext context{ width(), height(), 0 };
-        // camera.yaw++;
-        camera.update();
-        camera.use(context);
+        camera_.update();
+        camera_.use(context);
 
         // render
         bgfx::touch(0);
@@ -51,9 +49,20 @@ public:
         bx::mtxRotateXY(mtx, counter * 0.01f, counter * 0.01f);
         bgfx::setTransform(mtx);
 
-        cube->render(context);
+        cube_->render(context);
 
         bgfx::frame();
+    }
+
+    void on_resize(int width, int height) override
+    {
+        if (width != width_ || height != height_)
+        {
+            width_ = static_cast<uint32_t>(width);
+            height_ = static_cast<uint32_t>(height);
+            bgfx::setViewRect(0, 0, 0, width_, height_);
+            bgfx::reset(width_, height_, BGFX_RESET_VSYNC);
+        }
     }
 };
 
@@ -61,11 +70,13 @@ int main()
 {
     gl::spdlog::init();
 
-    auto glfw = std::make_shared<gl::event::comp::GlfwComponent>();
     auto playground = std::make_shared<Playground>();
+
+    auto glfw = std::make_shared<gl::event::comp::GlfwComponent>();
+    auto bgfx = std::make_shared<gl::event::comp::BgfxComponent>(800, 600, "Hello BGFX!", playground);
 
     gl::event::EventLoop core;
     core.add_component(glfw);
-    core.add_component(playground);
+    core.add_component(bgfx);
     core.run();
 }
