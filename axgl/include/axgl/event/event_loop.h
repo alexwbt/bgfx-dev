@@ -3,9 +3,9 @@
 #include <vector>
 #include <memory>
 
-#include "axgl/axgl.h"
+#include "axgl/namespace.h"
 
-NS_EVENT
+NAMESPACE_EVENT
 
 struct Component
 {
@@ -31,4 +31,4 @@ public:
     void run();
 };
 
-NS_EVENT_END
+NAMESPACE_EVENT_END

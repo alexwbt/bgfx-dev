@@ -23,6 +23,7 @@ target_include_directories(axgl
     bimg/include
     bx/include
     glfw/include
+    spdlog/include
 
     PUBLIC
     ./include
@@ -34,6 +35,7 @@ target_link_libraries(axgl
     bimg
     bx
     glfw
+    spdlog
 )
 
 include(${CMAKE_SOURCE_DIR}/_cmake/shader.cmake)

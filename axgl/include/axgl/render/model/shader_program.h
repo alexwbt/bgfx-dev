@@ -3,9 +3,9 @@
 #include <string>
 #include <bgfx/bgfx.h>
 
-#include "axgl/axgl.h"
+#include "axgl/namespace.h"
 
-NS_RENDER
+NAMESPACE_RENDER
 
 class ShaderProgram
 {
@@ -30,4 +30,4 @@ public:
     virtual const bgfx::VertexLayout& get_layout() const = 0;
 };
 
-NS_RENDER_END
+NAMESPACE_RENDER_END

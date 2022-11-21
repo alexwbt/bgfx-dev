@@ -4,7 +4,7 @@
 #include <fstream>
 #include <stdint.h>
 
-NS_RENDER
+NAMESPACE_RENDER
 
 const bgfx::ShaderHandle ShaderProgram::load_shader(const std::string& name)
 {
@@ -40,4 +40,4 @@ ShaderProgram::ShaderProgram(
     program_ = bgfx::createProgram(vsh, fsh, true);
 }
 
-NS_RENDER_END
+NAMESPACE_RENDER_END

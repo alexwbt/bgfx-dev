@@ -6,6 +6,8 @@
 #include <axgl/render/model/mesh.h>
 #include <axgl/render/camera.h>
 
+#include <axgl/spdlog.h>
+
 #include <bgfx/bgfx.h>
 
 #include "data.h"
@@ -57,6 +59,8 @@ public:
 
 int main()
 {
+    gl::spdlog::init();
+
     auto glfw = std::make_shared<gl::event::comp::GlfwComponent>();
     auto playground = std::make_shared<Playground>();
 

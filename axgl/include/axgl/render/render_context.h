@@ -3,9 +3,9 @@
 #include <stdint.h>
 #include <bgfx/bgfx.h>
 
-#include "axgl/axgl.h"
+#include "axgl/namespace.h"
 
-NS_RENDER
+NAMESPACE_RENDER
 
 struct RenderContext
 {
@@ -15,4 +15,4 @@ struct RenderContext
     bgfx::ViewId view_id;
 };
 
-NS_RENDER_END
+NAMESPACE_RENDER_END

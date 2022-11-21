@@ -10,10 +10,11 @@ target_include_directories(playground
     PRIVATE
     axgl/include
 
-    glfw/include
+    bx/include
     bgfx/include
     bimg/include
-    bx/include
+    glfw/include
+    spdlog/include
 
     ./src
 )
@@ -22,8 +23,9 @@ target_link_libraries(playground
     PRIVATE
     axgl
 
-    glfw
+    bx
     bgfx
     bimg
-    bx
+    glfw
+    spdlog
 )

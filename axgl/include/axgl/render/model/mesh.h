@@ -9,7 +9,7 @@
 #include "axgl/render/model/shader_program.h"
 #include "axgl/render/render_context.h"
 
-NS_RENDER
+NAMESPACE_RENDER
 
 class Mesh
 {
@@ -44,4 +44,4 @@ public:
     void render(const RenderContext& context);
 };
 
-NS_RENDER_END
+NAMESPACE_RENDER_END

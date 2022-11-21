@@ -1,6 +1,6 @@
 #include "axgl/render/camera.h"
 
-NS_RENDER
+NAMESPACE_RENDER
 
 Camera::Camera()
 {
@@ -47,4 +47,4 @@ const float* Camera::view_matrix()
     return view_matrix_;
 }
 
-NS_RENDER_END
+NAMESPACE_RENDER_END

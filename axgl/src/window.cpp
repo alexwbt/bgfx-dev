@@ -1,7 +1,8 @@
 #include "axgl/window.h"
 
-#include <iostream>
 #include <GLFW/glfw3.h>
+
+#include "axgl/spdlog.h"
 
 namespace glfw
 {
@@ -65,7 +66,7 @@ namespace glfw
 
     void Window::glfw_error_callback(int error, const char* description)
     {
-        std::cerr << error << " " << description << std::endl;
+        SPDLOG_DEBUG("GLFW Error {}: {}", error, description);
     }
 
     void Window::key_callback(GLFWwindow* glfw_window, int key, int scancode, int action, int mods)
@@ -114,10 +115,9 @@ namespace glfw
         {
             return windows_.at(glfw_window);
         }
-        catch (const std::out_of_range& e)
+        catch ([[maybe_unused]] const std::out_of_range& e)
         {
-            std::cerr << e.what() << std::endl;
-            std::cerr << "Tried to get GLFW window that does not exists." << std::endl;
+            SPDLOG_DEBUG("Tried to get GLFW window that does not exists. ({})", e.what());
             return nullptr;
         }
     }
@@ -132,8 +132,6 @@ namespace glfw
         glfw_window_ = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
         if (!glfw_window_)
             throw std::runtime_error("Failed to create window " + title + ".");
-
-        // glfwMakeContextCurrent(glfw_window_);
 
         glfwSetKeyCallback(glfw_window_, Window::key_callback);
         glfwSetCursorPosCallback(glfw_window_, Window::cursor_pos_callback);

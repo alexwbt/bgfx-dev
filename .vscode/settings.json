@@ -93,6 +93,7 @@
         "bgfx",
         "framebuffer",
         "glfw",
+        "spdlog",
         "vsync"
     ],
     "editor.tabSize": 4,

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "axgl/axgl.h"
+#include "axgl/namespace.h"
 #include "axgl/event/event_loop.h"
 
-NS_EVENT
+NAMESPACE_EVENT
 
 namespace comp
 {
@@ -17,4 +17,4 @@ namespace comp
     };
 }
 
-NS_EVENT_END
+NAMESPACE_EVENT_END

@@ -1,7 +1,7 @@
 #include "axgl/event/component/glfw.h"
 #include "axgl/window.h"
 
-NS_EVENT
+NAMESPACE_EVENT
 
 namespace comp
 {
@@ -26,4 +26,4 @@ namespace comp
     }
 }
 
-NS_EVENT_END
+NAMESPACE_EVENT_END

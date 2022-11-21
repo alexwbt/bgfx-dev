@@ -2,10 +2,10 @@
 
 #include <bx/math.h>
 
-#include "axgl/axgl.h"
+#include "axgl/namespace.h"
 #include "axgl/render/render_context.h"
 
-NS_RENDER
+NAMESPACE_RENDER
 
 class Camera
 {
@@ -33,4 +33,4 @@ public:
     const float* view_matrix();
 };
 
-NS_RENDER_END
+NAMESPACE_RENDER_END

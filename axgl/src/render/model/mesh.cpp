@@ -1,6 +1,6 @@
 #include "axgl/render/model/mesh.h"
 
-NS_RENDER
+NAMESPACE_RENDER
 
 void Mesh::render(const RenderContext& context)
 {
@@ -10,4 +10,4 @@ void Mesh::render(const RenderContext& context)
     bgfx::submit(context.view_id, shader_->get_program());
 }
 
-NS_RENDER_END
+NAMESPACE_RENDER_END

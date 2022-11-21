@@ -1,9 +1,9 @@
 #pragma once
 
-#include "axgl/axgl.h"
+#include "axgl/namespace.h"
 #include "axgl/render/model/shader_program.h"
 
-NS_RENDER
+NAMESPACE_RENDER
 
 namespace shader
 {
@@ -36,4 +36,4 @@ namespace shader
     };
 }
 
-NS_RENDER_END
+NAMESPACE_RENDER_END

@@ -18,7 +18,7 @@
 #endif
 #include <GLFW/glfw3native.h>
 
-NS_EVENT
+NAMESPACE_EVENT
 
 namespace comp
 {
@@ -69,4 +69,4 @@ namespace comp
 
 }
 
-NS_EVENT_END
+NAMESPACE_EVENT_END
