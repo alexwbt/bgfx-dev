@@ -63,16 +63,6 @@ namespace glfw
         }
     }
 
-    // void Window::RenderAll()
-    // {
-    //     for (const auto& [glfw_window, window] : windows_)
-    //     {
-    //         glfwMakeContextCurrent(glfw_window);
-    //         window->Render();
-    //         glfwSwapBuffers(glfw_window);
-    //     }
-    // }
-
     void Window::glfw_error_callback(int error, const char* description)
     {
         std::cerr << error << " " << description << std::endl;
@@ -80,40 +70,42 @@ namespace glfw
 
     void Window::key_callback(GLFWwindow* glfw_window, int key, int scancode, int action, int mods)
     {
-        // auto* window = get_window(glfw_window);
-        // if (!window || !window->event_listener_)
-        //     return;
+        auto* window = get_window(glfw_window);
+        if (!window || !window->event_listener_)
+            return;
 
-        // switch (action)
-        // {
-        // case GLFW_PRESS:
-        //     window->event_listener_->KeyDown(key);
-        //     break;
-        // case GLFW_RELEASE:
-        //     window->event_listener_->KeyUp(key);
-        //     break;
-        // }
+        switch (action)
+        {
+        case GLFW_PRESS:    window->event_listener_->on_key_down(key); break;
+        case GLFW_RELEASE:  window->event_listener_->on_key_down(key); break;
+        }
     }
 
     void Window::cursor_pos_callback(GLFWwindow* glfw_window, double x, double y)
     {
-        // auto* window = get_window(glfw_window);
-        // if (window && window->event_listener_)
-        //     window->event_listener_->MouseMove(x, y);
+        auto* window = get_window(glfw_window);
+        if (window && window->event_listener_)
+            window->event_listener_->on_mouse_move(x, y);
     }
 
     void Window::mouse_button_callback(GLFWwindow* glfw_window, int button, int action, int mods)
     {
-        // auto* window = get_window(glfw_window);
-        // if (window && window->event_listener_)
-        //     window->event_listener_->MouseDown(button);
+        auto* window = get_window(glfw_window);
+        if (!window || !window->event_listener_)
+            return;
+
+        switch (action)
+        {
+        case GLFW_PRESS:    window->event_listener_->on_mouse_down(button); break;
+        case GLFW_RELEASE:  window->event_listener_->on_key_down(button); break;
+        }
     }
 
     void Window::frame_buffer_size_callback(GLFWwindow* glfw_window, int width, int height)
     {
-        // auto* window = GetWindow(glfw_window);
-        // if (window && window->event_listener_)
-        //     window->event_listener_->Resized(width, height);
+        auto* window = get_window(glfw_window);
+        if (window && window->event_listener_)
+            window->event_listener_->on_resize(width, height);
     }
 
     Window* Window::get_window(GLFWwindow* glfw_window)
@@ -156,15 +148,10 @@ namespace glfw
         destroy();
     }
 
-    // void Window::SetEventListener(std::shared_ptr<EventListener> event_listener)
-    // {
-    //     event_listener_ = std::move(event_listener);
-    // }
-
-    // void Window::SetRenderer(std::shared_ptr<Renderer> renderer)
-    // {
-    //     renderer_ = std::move(renderer);
-    // }
+    void Window::set_event_listener(std::shared_ptr<EventListener> event_listener)
+    {
+        event_listener_ = std::move(event_listener);
+    }
 
     void Window::set_title(const std::string& title)
     {
@@ -175,12 +162,6 @@ namespace glfw
     {
         return glfw_window_;
     }
-
-    // void Window::Render()
-    // {
-    //     if (renderer_)
-    //         renderer_->Render();
-    // }
 
     void Window::destroy()
     {

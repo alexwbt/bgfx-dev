@@ -1,7 +1,9 @@
-#include "axgl/component/glfw.h"
+#include "axgl/event/component/glfw.h"
 #include "axgl/window.h"
 
-namespace gl
+NS_EVENT
+
+namespace comp
 {
     void GlfwComponent::initialize()
     {
@@ -23,3 +25,5 @@ namespace gl
         return !glfw::Window::should_close_all();
     }
 }
+
+NS_EVENT_END

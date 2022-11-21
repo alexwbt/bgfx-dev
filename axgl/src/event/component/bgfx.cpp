@@ -1,4 +1,4 @@
-#include "axgl/component/bgfx.h"
+#include "axgl/event/component/bgfx.h"
 
 #include <stdexcept>
 
@@ -18,7 +18,9 @@
 #endif
 #include <GLFW/glfw3native.h>
 
-namespace gl
+NS_EVENT
+
+namespace comp
 {
 
     BgfxComponent::BgfxComponent(uint32_t width, uint32_t height, const std::string& title)
@@ -66,3 +68,5 @@ namespace gl
     }
 
 }
+
+NS_EVENT_END

@@ -1,10 +1,13 @@
 #pragma once
 
-#include "axgl/core.h"
+#include "axgl/axgl.h"
+#include "axgl/event/event_loop.h"
 
-namespace gl
+NS_EVENT
+
+namespace comp
 {
-    class GlfwComponent : public core::Component
+    class GlfwComponent : public Component
     {
     public:
         void initialize() override;
@@ -13,3 +16,5 @@ namespace gl
         bool alive() override;
     };
 }
+
+NS_EVENT_END

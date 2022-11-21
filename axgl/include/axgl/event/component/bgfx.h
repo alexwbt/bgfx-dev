@@ -1,15 +1,18 @@
 #pragma once
 
-#include "axgl/core.h"
+#include "axgl/axgl.h"
 #include "axgl/window.h"
+#include "axgl/event/event_loop.h"
 
 #include <string>
 #include <memory>
 #include <stdint.h>
 
-namespace gl
+NS_EVENT
+
+namespace comp
 {
-    class BgfxComponent : public core::Component
+    class BgfxComponent : public Component
     {
     private:
         uint32_t width_;
@@ -25,5 +28,12 @@ namespace gl
         void terminate() override;
         void update() override;
         bool alive() override;
+
+    protected:
+        uint32_t width() { return width_; }
+        uint32_t height() { return height_; }
+        std::shared_ptr<const glfw::Window> window() { return window_; }
     };
 }
+
+NS_EVENT_END

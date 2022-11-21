@@ -3,15 +3,18 @@ add_library(axgl)
 
 target_sources(axgl
     PRIVATE
-    ./src/core.cpp
     ./src/window.cpp
 
-    ./src/model/shader_program.cpp
+    ./src/render/camera.cpp
+    ./src/render/model/mesh.cpp
+    ./src/render/model/shader_program.cpp
+    
+    ./src/event/event_loop.cpp
+    ./src/event/component/glfw.cpp
+    ./src/event/component/bgfx.cpp
 
-    ./src/component/glfw.cpp
-    ./src/component/bgfx.cpp
-
-    ./res/shader/fs_pc.sc ./res/shader/vs_pc.sc
+    ./res/shader/fs_pc.sc
+    ./res/shader/vs_pc.sc
 )
 
 target_include_directories(axgl

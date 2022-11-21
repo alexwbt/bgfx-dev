@@ -1,8 +1,8 @@
 #pragma once
 
-#include <axgl/model/shader/pc.h>
+#include <axgl/render/model/shader/pc.h>
 
-static std::vector<gl::shader::PC::Vertex> cube_vertices =
+static std::vector<gl::render::shader::PC::Vertex> cube_vertices =
 {
     { -1.0f,  1.0f,  1.0f, 0xff000000 },
     {  1.0f,  1.0f,  1.0f, 0xff0000ff },

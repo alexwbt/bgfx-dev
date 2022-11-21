@@ -10,6 +10,18 @@ namespace glfw
 {
     class Window final
     {
+    public:
+        struct EventListener
+        {
+            virtual ~EventListener() {}
+            virtual void on_key_down(int key) {}
+            virtual void on_key_up(int key) {}
+            virtual void on_mouse_down(int button) {}
+            virtual void on_mouse_up(int button) {}
+            virtual void on_mouse_move(double x, double y) {}
+            virtual void on_resize(int width, int height) {}
+        };
+
     private:
         static bool initialized_;
         static bool terminated_;
@@ -21,7 +33,6 @@ namespace glfw
 
         static bool should_close_all();
         static void update_all();
-        // static void RenderAll();
 
     private:
         static void glfw_error_callback(int error, const char* description);
@@ -36,8 +47,7 @@ namespace glfw
     private:
         GLFWwindow* glfw_window_;
 
-        // std::shared_ptr<EventListener> event_listener_;
-        // std::shared_ptr<Renderer> renderer_;
+        std::shared_ptr<EventListener> event_listener_;
 
         bool destroyed_ = false;
 
@@ -46,8 +56,7 @@ namespace glfw
         ~Window();
 
     public:
-        // void SetEventListener(std::shared_ptr<EventListener> event_listener);
-        // void SetRenderer(std::shared_ptr<Renderer> renderer);
+        void set_event_listener(std::shared_ptr<EventListener> event_listener);
 
         void set_title(const std::string& title);
 
@@ -55,7 +64,6 @@ namespace glfw
         bool is_destroyed() const { return destroyed_; }
 
     private:
-        // void Render();
         void destroy();
     };
 }
