@@ -9,11 +9,11 @@
 
 NAMESPACE_GL
 
-namespace spdlog
+namespace log
 {
     inline void init()
     {
-        ::spdlog::set_level(::spdlog::level::trace);
+        spdlog::set_level(spdlog::level::trace);
     }
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "axgl/namespace.h"
-#include "axgl/render/model/shader_program.h"
+#include "axgl/render/shader_program.h"
 
 NAMESPACE_RENDER
 

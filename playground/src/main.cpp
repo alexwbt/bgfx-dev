@@ -3,8 +3,9 @@
 #include <axgl/event/event_loop.h>
 
 #include <axgl/render/render_context.h>
-#include <axgl/render/model/mesh.h>
 #include <axgl/render/camera.h>
+#include <axgl/render/model.h>
+#include <axgl/render/mesh.h>
 
 #include <axgl/spdlog.h>
 
@@ -15,12 +16,15 @@
 class Playground : public gl::event::comp::BgfxComponent::Adapter
 {
 private:
+    int tick = 0;
+
     uint32_t width_ = 0;
     uint32_t height_ = 0;
     const bgfx::ViewId view_id_ = 0;
 
     gl::render::Camera camera_;
-    std::shared_ptr<gl::render::Mesh> cube_;
+    // std::shared_ptr<gl::render::Mesh> cube_;
+    gl::render::Model cube_;
 
 public:
     void initialize() override
@@ -28,13 +32,17 @@ public:
         bgfx::setViewClear(view_id_, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x443355FF, 1.0f, 0);
 
         auto shader = std::make_shared<gl::render::shader::PC>();
-        cube_ = std::make_shared<gl::render::Mesh>(shader, cube_vertices, cube_indices);
+        auto cube_mesh = std::make_shared<gl::render::Mesh>(shader, cube_vertices, cube_indices);
+        cube_.set_mesh(cube_mesh);
 
-        camera_.position = { -5.0f , 0.0f , 0.0f };
+        camera_.position = { -5.0f, 0.0f, 0.0f };
+        cube_.translate({ 0, 2.0f, 0});
     }
 
     void update() override
     {
+        ++tick;
+
         gl::render::RenderContext context{
             width_,
             height_,
@@ -44,9 +52,11 @@ public:
         camera_.update();
         camera_.use(context);
 
+        cube_.rotate({ 0.01f, 0.01f, 0.01f });
+
         // render
         bgfx::touch(view_id_);
-        cube_->render(context);
+        cube_.render(context);
         bgfx::frame();
     }
 
@@ -58,14 +68,13 @@ public:
             height_ = static_cast<uint32_t>(height);
             bgfx::reset(width_, height_, BGFX_RESET_VSYNC);
             bgfx::setViewRect(view_id_, 0, 0, width_, height_);
-            SPDLOG_DEBUG("GLFW resized window. ({}, {})", width, height);
         }
     }
 };
 
 int main()
 {
-    gl::spdlog::init();
+    gl::log::init();
 
     auto playground = std::make_shared<Playground>();
 

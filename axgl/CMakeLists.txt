@@ -5,9 +5,10 @@ target_sources(axgl
     PRIVATE
     ./src/window.cpp
 
+    ./src/render/mesh.cpp
+    ./src/render/model.cpp
     ./src/render/camera.cpp
-    ./src/render/model/mesh.cpp
-    ./src/render/model/shader_program.cpp
+    ./src/render/shader_program.cpp
     
     ./src/event/event_loop.cpp
     ./src/event/component/glfw.cpp

@@ -1,4 +1,4 @@
-#include "axgl/render/model/mesh.h"
+#include "axgl/render/mesh.h"
 
 NAMESPACE_RENDER
 

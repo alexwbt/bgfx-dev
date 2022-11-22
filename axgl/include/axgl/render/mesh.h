@@ -6,7 +6,7 @@
 #include <bgfx/bgfx.h>
 #include <bx/math.h>
 
-#include "axgl/render/model/shader_program.h"
+#include "axgl/render/shader_program.h"
 #include "axgl/render/render_context.h"
 
 NAMESPACE_RENDER
