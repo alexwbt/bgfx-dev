@@ -15,8 +15,13 @@ namespace comp
     class BgfxComponent : public Component
     {
     public:
-        class Adapter : public Component, public glfw::Window::EventListener
-        {};
+        struct Adapter : public glfw::Window::EventListener
+        {
+            virtual ~Adapter() {}
+            virtual void initialize() {}
+            virtual void terminate() {}
+            virtual void update() {}
+        };
 
     private:
         uint32_t width_;

@@ -79,7 +79,7 @@ namespace comp
 
     bool BgfxComponent::alive()
     {
-        return adapter_->alive() || !window_->is_destroyed();
+        return !window_->is_destroyed();
     }
 
 }
