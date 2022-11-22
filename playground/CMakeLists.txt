@@ -8,24 +8,18 @@ target_sources(playground
 
 target_include_directories(playground
     PRIVATE
-    axgl/include
 
-    bx/include
-    bgfx/include
-    bimg/include
     glfw/include
+    bgfx/include
+    axgl/include
     spdlog/include
-
-    ./src
 )
 
 target_link_libraries(playground
     PRIVATE
-    axgl
-
-    bx
-    bgfx
-    bimg
+    glm
     glfw
+    bgfx
+    axgl
     spdlog
 )

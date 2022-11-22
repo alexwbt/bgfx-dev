@@ -36,7 +36,7 @@ public:
         cube_.set_mesh(cube_mesh);
 
         camera_.position = { -5.0f, 0.0f, 0.0f };
-        cube_.translate({ 0, 2.0f, 0});
+        // cube_.translation += glm::vec3(0, 2, 0);
     }
 
     void update() override
@@ -52,7 +52,7 @@ public:
         camera_.update();
         camera_.use(context);
 
-        cube_.rotate({ 0.01f, 0.01f, 0.01f });
+        // cube_.rotation += glm::vec3(0.01f, 0.01f, 0.01f);
 
         // render
         bgfx::touch(view_id_);

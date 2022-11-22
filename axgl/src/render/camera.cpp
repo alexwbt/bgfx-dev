@@ -1,5 +1,14 @@
 #include "axgl/render/camera.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtx/norm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include <bx/math.h>
+
+#include "axgl/spdlog.h"
+
 NAMESPACE_RENDER
 
 Camera::Camera()
@@ -9,40 +18,61 @@ Camera::Camera()
 
 void Camera::use(const RenderContext& context)
 {
-    float projection_matrix[16];
+    glm::mat4 projection_matrix = glm::perspective(
+        glm::radians(fov),
+        static_cast<float>(context.width) /
+        static_cast<float>(context.height),
+        0.1f, 100.0f
+    );
+
+    float projection_matrix_[16];
     bx::mtxProj(
-        projection_matrix,
+        projection_matrix_,
         fov,
-        float(context.width) / float(context.height),
+        static_cast<float>(context.width) /
+        static_cast<float>(context.height),
         0.1f,
         100.0f,
         bgfx::getCaps()->homogeneousDepth
     );
 
-    bgfx::setViewTransform(context.view_id, view_matrix_, projection_matrix);
+    // glm::mat4(projection_matrix);
+
+    SPDLOG_DEBUG("projection equal: {}", glm::make_mat4x4(projection_matrix_) == projection_matrix);
+
+    bgfx::setViewTransform(
+        context.view_id,
+        glm::value_ptr(view_matrix_),
+        projection_matrix_
+    );
 }
 
 void Camera::update()
 {
-    auto yaw_radians = bx::toRad(yaw);
-    auto pitch_radians = bx::toRad(pitch);
-    auto cos_yaw_radians = bx::cos(yaw_radians);
-    auto sin_yaw_radians = bx::sin(yaw_radians);
-    auto cos_pitch_radians = bx::cos(pitch_radians);
-    auto sin_pitch_radians = bx::sin(pitch_radians);
-    front_ = bx::normalize(bx::Vec3(
+    auto yaw_radians = glm::radians(yaw);
+    auto pitch_radians = glm::radians(pitch);
+    auto cos_yaw_radians = glm::cos(yaw_radians);
+    auto sin_yaw_radians = glm::sin(yaw_radians);
+    auto cos_pitch_radians = glm::cos(pitch_radians);
+    auto sin_pitch_radians = glm::sin(pitch_radians);
+    front_ = glm::normalize(glm::vec3(
         cos_yaw_radians * cos_pitch_radians,
         sin_pitch_radians,
         sin_yaw_radians * cos_pitch_radians
     ));
-    front_side_ = bx::normalize(bx::Vec3(cos_yaw_radians, 0, sin_yaw_radians));
-    right_ = bx::normalize(bx::cross(front_, bx::Vec3(0, 1, 0)));
-    up_ = bx::normalize(bx::cross(right_, front_));
+    front_side_ = glm::normalize(glm::vec3(cos_yaw_radians, 0, sin_yaw_radians));
+    right_ = glm::normalize(glm::cross(front_, glm::vec3(0, 1, 0)));
+    up_ = glm::normalize(glm::cross(right_, front_));
 
-    bx::mtxLookAt(view_matrix_, position, bx::add(position, front_));
+    view_matrix_ = glm::lookAt(position, position + front_, up_);
+
+    float view[16];
+    bx::mtxLookAt(view, bx::Vec3(bx::init::Zero), bx::add(bx::Vec3(position.x, position.y, position.z), bx::Vec3(front_.x, front_.y, front_.z)));
+
+    SPDLOG_DEBUG("view equal: {}", glm::make_mat4x4(view) == view_matrix_);
 }
 
-const float* Camera::view_matrix()
+const glm::mat4 Camera::view_matrix()
 {
     return view_matrix_;
 }

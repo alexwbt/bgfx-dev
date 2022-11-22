@@ -20,10 +20,10 @@ target_sources(axgl
 
 target_include_directories(axgl
     PRIVATE
-    bgfx/include
-    bimg/include
+
     bx/include
     glfw/include
+    bgfx/include
     spdlog/include
 
     PUBLIC
@@ -32,10 +32,10 @@ target_include_directories(axgl
 
 target_link_libraries(axgl
     PRIVATE
-    bgfx
-    bimg
     bx
+    glm
     glfw
+    bgfx
     spdlog
 )
 

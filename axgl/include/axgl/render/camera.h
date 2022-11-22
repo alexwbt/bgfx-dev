@@ -1,6 +1,6 @@
 #pragma once
 
-#include <bx/math.h>
+#include <glm/glm.hpp>
 
 #include "axgl/namespace.h"
 #include "axgl/render/render_context.h"
@@ -13,15 +13,15 @@ public:
     float yaw = 0.0f;
     float pitch = 0.0f;
     float fov = 80.0f;
-    bx::Vec3 position{ bx::init::Zero };
+    glm::vec3 position{ 0 };
 
 private:
-    bx::Vec3 front_{ bx::init::Zero };
-    bx::Vec3 front_side_{ bx::init::Zero };
-    bx::Vec3 right_{ bx::init::Zero };
-    bx::Vec3 up_{ bx::init::Zero };
+    glm::vec3 front_{ 0 };
+    glm::vec3 front_side_{ 0 };
+    glm::vec3 right_{ 0 };
+    glm::vec3 up_{ 0 };
 
-    float view_matrix_[16];
+    glm::mat4 view_matrix_{ 0 };
 
 public:
     Camera();
@@ -30,7 +30,7 @@ public:
     void use(const RenderContext& context);
 
     void update();
-    const float* view_matrix();
+    const glm::mat4 view_matrix();
 };
 
 NAMESPACE_RENDER_END
