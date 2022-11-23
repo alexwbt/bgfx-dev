@@ -96,6 +96,7 @@
         "framebuffer",
         "glfw",
         "spdlog",
+        "timestep",
         "vsync"
     ],
     "editor.tabSize": 4,

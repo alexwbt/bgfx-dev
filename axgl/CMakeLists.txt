@@ -9,7 +9,9 @@ target_sources(axgl
     ./src/render/model.cpp
     ./src/render/camera.cpp
     ./src/render/shader_program.cpp
-    
+
+    ./src/controller/camera_controller.cpp
+
     ./src/event/event_loop.cpp
     ./src/event/component/glfw.cpp
     ./src/event/component/bgfx.cpp

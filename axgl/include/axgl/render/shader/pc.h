@@ -12,9 +12,7 @@ namespace shader
     public:
         struct Vertex
         {
-            float x;
-            float y;
-            float z;
+            float x, y, z;
             uint32_t rgba;
         };
 

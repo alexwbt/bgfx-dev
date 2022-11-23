@@ -62,8 +62,7 @@ namespace comp
             throw std::runtime_error("Failed to initialize bgfx.");
 
         window_->set_event_listener(adapter_);
-        adapter_->initialize();
-        adapter_->on_resize(width_, height_);
+        adapter_->initialize({ width_, height_, title_, window_ });
     }
 
     void BgfxComponent::terminate()

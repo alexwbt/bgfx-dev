@@ -18,7 +18,7 @@ public:
     glm::vec3 translation{ 0.0f };
 
 private:
-    std::shared_ptr<Mesh> mesh_ = nullptr;
+    std::shared_ptr<Mesh> mesh_;
 
     glm::mat4 model_matrix_{ 1.0f };
 

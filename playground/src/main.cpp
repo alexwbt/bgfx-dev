@@ -1,3 +1,6 @@
+#include <axgl/controller/camera_controller.h>
+#include <axgl/controller/timestep_controller.h>
+
 #include <axgl/event/component/glfw.h>
 #include <axgl/event/component/bgfx.h>
 #include <axgl/event/event_loop.h>
@@ -11,6 +14,7 @@
 
 #include <glm/glm.hpp>
 #include <bgfx/bgfx.h>
+#include <glfw/glfw3.h>
 
 #include "data.h"
 
@@ -19,23 +23,42 @@ class Playground : public gl::event::comp::BgfxComponent::Adapter
 private:
     uint32_t width_ = 0;
     uint32_t height_ = 0;
+    std::shared_ptr<glfw::Window> window_;
     const bgfx::ViewId view_id_ = 0;
 
-    gl::render::Camera camera_;
+    gl::ctrl::TimestepController timestep_controller_;
+
+    std::shared_ptr<gl::render::Camera> camera_;
+    gl::ctrl::SimpleCameraController camera_controller_;
+
     gl::render::Model cube_;
 
 public:
-    void initialize() override
+    void initialize(const InitializationContext& context) override
     {
+        window_ = context.window;
+        glfwSetInputMode(
+            window_->get_glfw_window(),
+            GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+        width_ = context.width;
+        height_ = context.height;
+        bgfx::setViewRect(view_id_, 0, 0, width_, height_);
         bgfx::setViewClear(view_id_, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x443355FF, 1.0f, 0);
+
+        camera_ = std::make_shared<gl::render::Camera>();
+        camera_->position = { 0.0f, 0.0f, -5.0f };
+        camera_->yaw = 90.0f;
+        camera_->update_transform();
+        camera_controller_.set_camera(camera_);
 
         auto shader = std::make_shared<gl::render::shader::PC>();
         auto cube_mesh = std::make_shared<gl::render::Mesh>(shader, cube_vertices, cube_indices);
         cube_.set_mesh(cube_mesh);
 
-        camera_.yaw = 90.0f;
-        camera_.position = { 0.0f, 0.0f, -5.0f };
-        camera_.update_transform();
+        timestep_controller_.initialize();
+        timestep_controller_.set_update_function(std::bind(&Playground::tick, this));
+        timestep_controller_.set_render_function(std::bind(&Playground::render, this));
     }
 
     void on_resize(int width, int height) override
@@ -49,12 +72,31 @@ public:
         }
     }
 
+    void on_mouse_move(double x, double y) override
+    {
+        camera_controller_.pivot(
+            static_cast<float>(x),
+            static_cast<float>(y)
+        );
+    }
+
     void update() override
     {
-        cube_.rotation += glm::vec3(-0.01f, 0, -0.01f);
-        cube_.update_transform();
+        timestep_controller_.update();
+    }
 
-        render();
+    void tick()
+    {
+        camera_controller_.move({
+            glfwGetKey(window_->get_glfw_window(), GLFW_KEY_W) == GLFW_PRESS,
+            glfwGetKey(window_->get_glfw_window(), GLFW_KEY_S) == GLFW_PRESS,
+            glfwGetKey(window_->get_glfw_window(), GLFW_KEY_D) == GLFW_PRESS,
+            glfwGetKey(window_->get_glfw_window(), GLFW_KEY_A) == GLFW_PRESS,
+            glfwGetKey(window_->get_glfw_window(), GLFW_KEY_SPACE) == GLFW_PRESS,
+            glfwGetKey(window_->get_glfw_window(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS });
+
+        // cube_.rotation += glm::vec3(-0.01f, 0, -0.01f);
+        // cube_.update_transform();
     }
 
     void render()
@@ -66,7 +108,7 @@ public:
         };
 
         bgfx::touch(view_id_);
-        camera_.use(context);
+        camera_->use(context);
         cube_.render(context);
         bgfx::frame();
     }

@@ -29,6 +29,11 @@ public:
     Camera();
     virtual ~Camera() {}
 
+    const glm::vec3 front() { return front_; }
+    const glm::vec3 front_side() { return front_side_; }
+    const glm::vec3 right() { return right_; }
+    const glm::vec3 up() { return up_; }
+
     void use(const RenderContext& context);
 
     void update_transform();

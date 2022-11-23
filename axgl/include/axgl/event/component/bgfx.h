@@ -17,8 +17,16 @@ namespace comp
     public:
         struct Adapter : public glfw::Window::EventListener
         {
+            struct InitializationContext
+            {
+                uint32_t width;
+                uint32_t height;
+                std::string title;
+                std::shared_ptr<glfw::Window> window;
+            };
+
             virtual ~Adapter() {}
-            virtual void initialize() {}
+            virtual void initialize(const InitializationContext& context) {}
             virtual void terminate() {}
             virtual void update() {}
         };
