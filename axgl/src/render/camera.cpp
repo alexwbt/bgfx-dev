@@ -5,15 +5,11 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <bx/math.h>
-
-#include "axgl/spdlog.h"
-
 NAMESPACE_RENDER
 
 Camera::Camera()
 {
-    update();
+    update_transform();
 }
 
 void Camera::use(const RenderContext& context)
@@ -22,32 +18,17 @@ void Camera::use(const RenderContext& context)
         glm::radians(fov),
         static_cast<float>(context.width) /
         static_cast<float>(context.height),
-        0.1f, 100.0f
+        near_clip, far_clip
     );
-
-    float projection_matrix_[16];
-    bx::mtxProj(
-        projection_matrix_,
-        fov,
-        static_cast<float>(context.width) /
-        static_cast<float>(context.height),
-        0.1f,
-        100.0f,
-        bgfx::getCaps()->homogeneousDepth
-    );
-
-    // glm::mat4(projection_matrix);
-
-    SPDLOG_DEBUG("projection equal: {}", glm::make_mat4x4(projection_matrix_) == projection_matrix);
 
     bgfx::setViewTransform(
         context.view_id,
         glm::value_ptr(view_matrix_),
-        projection_matrix_
+        glm::value_ptr(projection_matrix)
     );
 }
 
-void Camera::update()
+void Camera::update_transform()
 {
     auto yaw_radians = glm::radians(yaw);
     auto pitch_radians = glm::radians(pitch);
@@ -66,10 +47,7 @@ void Camera::update()
 
     view_matrix_ = glm::lookAt(position, position + front_, up_);
 
-    float view[16];
-    bx::mtxLookAt(view, bx::Vec3(bx::init::Zero), bx::add(bx::Vec3(position.x, position.y, position.z), bx::Vec3(front_.x, front_.y, front_.z)));
-
-    SPDLOG_DEBUG("view equal: {}", glm::make_mat4x4(view) == view_matrix_);
+    // SPDLOG_DEBUG("view equal: {}", glm::make_mat4x4(view) == view_matrix_);
 }
 
 const glm::mat4 Camera::view_matrix()

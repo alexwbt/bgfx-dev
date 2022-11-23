@@ -13,15 +13,17 @@ public:
     float yaw = 0.0f;
     float pitch = 0.0f;
     float fov = 80.0f;
-    glm::vec3 position{ 0 };
+    glm::vec3 position{ 0.0f };
+    float near_clip = 0.1f;
+    float far_clip = 100.0f;
 
 private:
-    glm::vec3 front_{ 0 };
-    glm::vec3 front_side_{ 0 };
-    glm::vec3 right_{ 0 };
-    glm::vec3 up_{ 0 };
+    glm::vec3 front_{ 0.0f };
+    glm::vec3 front_side_{ 0.0f };
+    glm::vec3 right_{ 0.0f };
+    glm::vec3 up_{ 0.0f };
 
-    glm::mat4 view_matrix_{ 0 };
+    glm::mat4 view_matrix_{ 0.0f };
 
 public:
     Camera();
@@ -29,7 +31,7 @@ public:
 
     void use(const RenderContext& context);
 
-    void update();
+    void update_transform();
     const glm::mat4 view_matrix();
 };
 

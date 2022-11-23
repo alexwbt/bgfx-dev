@@ -12,15 +12,18 @@ NAMESPACE_RENDER
 
 class Model
 {
+public:
+    glm::vec3 scale{ 1.0f };
+    glm::vec3 rotation{ 0.0f };
+    glm::vec3 translation{ 0.0f };
+
 private:
     std::shared_ptr<Mesh> mesh_ = nullptr;
 
-public:
-    glm::vec3 scale{ 1.0f };
-    glm::vec3 rotation{ 0 };
-    glm::vec3 translation{ 0 };
+    glm::mat4 model_matrix_{ 1.0f };
 
 public:
+    void update_transform();
     void set_mesh(std::shared_ptr<Mesh> mesh);
     void render(const RenderContext& context);
 };

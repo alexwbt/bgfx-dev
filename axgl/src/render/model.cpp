@@ -6,11 +6,16 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <bx/math.h>
-
-#include "axgl/spdlog.h"
-
 NAMESPACE_RENDER
+
+void Model::update_transform()
+{
+    glm::mat4 translation_matrix = glm::translate(glm::mat4(1.0f), translation);
+    glm::mat4 rotation_matrix = glm::toMat4(glm::quat(rotation));
+    glm::mat4 scale_matrix = glm::scale(scale);
+
+    model_matrix_ = translation_matrix * rotation_matrix * scale_matrix;
+}
 
 void Model::set_mesh(std::shared_ptr<Mesh> mesh)
 {
@@ -22,20 +27,7 @@ void Model::render(const RenderContext& context)
     if (!mesh_)
         return;
 
-    glm::mat4 translation_matrix = glm::translate(glm::mat4(), translation);
-    glm::mat4 rotation_matrix = glm::toMat4(glm::quat(rotation));
-    glm::mat4 scale_matrix = glm::scale(scale);
-
-    glm::mat4 model_matrix = translation_matrix;
-
-    float translate_matrix[16];
-    bx::mtxTranslate(
-        translate_matrix,
-        translation.x,
-        translation.y,
-        translation.z
-    );
-    bgfx::setTransform(translate_matrix);
+    bgfx::setTransform(glm::value_ptr(model_matrix_));
     mesh_->render(context);
 }
 

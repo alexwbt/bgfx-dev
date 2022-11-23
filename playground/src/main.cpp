@@ -9,6 +9,7 @@
 
 #include <axgl/spdlog.h>
 
+#include <glm/glm.hpp>
 #include <bgfx/bgfx.h>
 
 #include "data.h"
@@ -16,14 +17,11 @@
 class Playground : public gl::event::comp::BgfxComponent::Adapter
 {
 private:
-    int tick = 0;
-
     uint32_t width_ = 0;
     uint32_t height_ = 0;
     const bgfx::ViewId view_id_ = 0;
 
     gl::render::Camera camera_;
-    // std::shared_ptr<gl::render::Mesh> cube_;
     gl::render::Model cube_;
 
 public:
@@ -35,29 +33,9 @@ public:
         auto cube_mesh = std::make_shared<gl::render::Mesh>(shader, cube_vertices, cube_indices);
         cube_.set_mesh(cube_mesh);
 
-        camera_.position = { -5.0f, 0.0f, 0.0f };
-        // cube_.translation += glm::vec3(0, 2, 0);
-    }
-
-    void update() override
-    {
-        ++tick;
-
-        gl::render::RenderContext context{
-            width_,
-            height_,
-            view_id_
-        };
-
-        camera_.update();
-        camera_.use(context);
-
-        // cube_.rotation += glm::vec3(0.01f, 0.01f, 0.01f);
-
-        // render
-        bgfx::touch(view_id_);
-        cube_.render(context);
-        bgfx::frame();
+        camera_.yaw = 90.0f;
+        camera_.position = { 0.0f, 0.0f, -5.0f };
+        camera_.update_transform();
     }
 
     void on_resize(int width, int height) override
@@ -69,6 +47,28 @@ public:
             bgfx::reset(width_, height_, BGFX_RESET_VSYNC);
             bgfx::setViewRect(view_id_, 0, 0, width_, height_);
         }
+    }
+
+    void update() override
+    {
+        cube_.rotation += glm::vec3(-0.01f, 0, -0.01f);
+        cube_.update_transform();
+
+        render();
+    }
+
+    void render()
+    {
+        gl::render::RenderContext context{
+            width_,
+            height_,
+            view_id_
+        };
+
+        bgfx::touch(view_id_);
+        camera_.use(context);
+        cube_.render(context);
+        bgfx::frame();
     }
 };
 
