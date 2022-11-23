@@ -20,12 +20,9 @@ public:
         const std::string& vertex_shader,
         const std::string& fragment_shader
     );
-    virtual ~ShaderProgram() {}
+    virtual ~ShaderProgram();
 
-    const bgfx::ProgramHandle& get_program() const
-    {
-        return program_;
-    }
+    const bgfx::ProgramHandle& get_program() const;
 
     virtual const bgfx::VertexLayout& get_layout() const = 0;
 };

@@ -40,6 +40,8 @@ public:
             bgfx::copy(&indices[0], static_cast<uint32_t>(indices.size()) * sizeof(uint16_t))))
     {}
 
+    virtual ~Mesh();
+
     void render(const RenderContext& context);
 };
 

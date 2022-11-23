@@ -2,6 +2,12 @@
 
 NAMESPACE_RENDER
 
+Mesh::~Mesh()
+{
+    bgfx::destroy(vertex_buffer_);
+    bgfx::destroy(index_buffer_);
+}
+
 void Mesh::render(const RenderContext& context)
 {
     bgfx::setVertexBuffer(0, vertex_buffer_);

@@ -40,4 +40,14 @@ ShaderProgram::ShaderProgram(
     program_ = bgfx::createProgram(vsh, fsh, true);
 }
 
+ShaderProgram::~ShaderProgram()
+{
+    bgfx::destroy(program_);
+}
+
+const bgfx::ProgramHandle& ShaderProgram::get_program() const
+{
+    return program_;
+}
+
 NAMESPACE_RENDER_END
