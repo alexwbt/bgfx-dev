@@ -32,6 +32,7 @@ private:
     gl::ctrl::SimpleCameraController camera_controller_;
 
     gl::render::Model cube_;
+    gl::render::Model textured_cube_;
 
 public:
     void initialize(const InitializationContext& context) override
@@ -52,9 +53,19 @@ public:
         camera_->update_transform();
         camera_controller_.set_camera(camera_);
 
-        auto shader = std::make_shared<gl::render::shader::PC>();
-        auto cube_mesh = std::make_shared<gl::render::Mesh>(shader, cube_vertices, cube_indices);
+        auto pc_shader = std::make_shared<gl::render::shader::PC>();
+        auto cube_mesh = std::make_shared<gl::render::Mesh>(pc_shader, cube_vertices, cube_indices);
         cube_.set_mesh(cube_mesh);
+
+        auto texture = std::make_shared<gl::render::Texture>("s_texColor", "./res/texture/fieldstone-rgba.tga");
+        auto normal_map = std::make_shared<gl::render::Texture>("s_texNormal", "./res/texture/fieldstone-n.tga");
+        auto pntt_shader = std::make_shared<gl::render::shader::PNTT>();
+        auto textured_cube_mesh = std::make_shared<gl::render::Mesh>(pntt_shader, textured_cube_vertices, textured_cube_indices);
+        textured_cube_.set_mesh(cube_mesh);
+        // textured_cube_.add_texture(texture);
+        // textured_cube_.add_texture(normal_map);
+        textured_cube_.translation.x += 10;
+        textured_cube_.update_transform();
 
         timestep_controller_.initialize();
         timestep_controller_.set_update_function(std::bind(&Playground::tick, this));

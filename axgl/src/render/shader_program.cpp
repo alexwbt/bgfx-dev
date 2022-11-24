@@ -1,8 +1,8 @@
 #include "axgl/render/shader_program.h"
 
-#include <vector>
-#include <fstream>
 #include <stdint.h>
+
+#include "axgl/file.h"
 
 NAMESPACE_RENDER
 
@@ -21,10 +21,9 @@ const bgfx::ShaderHandle ShaderProgram::load_shader(const std::string& name)
     case bgfx::RendererType::Vulkan:        prefix += "spirv_"; break;
     }
 
-    std::ifstream input(prefix + name + ".bin", std::ios::binary);
-    std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(input), {});
-    // TODO: might need to append '\0' at the end of the data
-    buffer.push_back('\0');
+    auto buffer = readBinaryFile(prefix + name + ".bin");
+    // might need to append '\0' at the end of the data
+    // buffer.push_back('\0');
 
     const bgfx::Memory* data = bgfx::copy(&buffer[0], static_cast<uint32_t>(buffer.size()));
 

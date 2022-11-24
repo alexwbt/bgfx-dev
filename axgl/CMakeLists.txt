@@ -8,6 +8,7 @@ target_sources(axgl
     ./src/render/mesh.cpp
     ./src/render/model.cpp
     ./src/render/camera.cpp
+    ./src/render/texture.cpp
     ./src/render/shader_program.cpp
 
     ./src/controller/camera_controller.cpp
@@ -18,6 +19,8 @@ target_sources(axgl
 
     ./res/shader/fs_pc.sc
     ./res/shader/vs_pc.sc
+    ./res/shader/fs_pntt.sc
+    ./res/shader/vs_pntt.sc
 )
 
 target_include_directories(axgl
@@ -25,6 +28,7 @@ target_include_directories(axgl
 
     bx/include
     glfw/include
+    bimg/include
     bgfx/include
     spdlog/include
 
@@ -37,6 +41,7 @@ target_link_libraries(axgl
     bx
     glm
     glfw
+    bimg
     bgfx
     spdlog
 )

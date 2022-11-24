@@ -6,6 +6,8 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "axgl/spdlog.h"
+
 NAMESPACE_RENDER
 
 void Model::update_transform()
@@ -22,10 +24,24 @@ void Model::set_mesh(std::shared_ptr<Mesh> mesh)
     mesh_ = std::move(mesh);
 }
 
+void Model::add_texture(std::shared_ptr<const Texture> texture)
+{
+    uint32_t max = bgfx::getCaps()->limits.maxTextureSamplers;
+    if (textures_.size() < max)
+        textures_.push_back(std::move(texture));
+    else
+        SPDLOG_ERROR(
+            "Failed to add texture \"{}\", max texture count per model is {}.",
+            texture->uniform_name(), max);
+}
+
 void Model::render(const RenderContext& context)
 {
     if (!mesh_)
         return;
+
+    for (uint8_t i = 0; i < textures_.size(); ++i)
+        textures_[i]->use(i);
 
     bgfx::setTransform(glm::value_ptr(model_matrix_));
     mesh_->render(context);

@@ -7,6 +7,7 @@
 
 #include "axgl/namespace.h"
 #include "axgl/render/mesh.h"
+#include "axgl/render/texture.h"
 
 NAMESPACE_RENDER
 
@@ -20,11 +21,14 @@ public:
 private:
     std::shared_ptr<Mesh> mesh_;
 
+    std::vector<std::shared_ptr<const Texture>> textures_;
+
     glm::mat4 model_matrix_{ 1.0f };
 
 public:
     void update_transform();
     void set_mesh(std::shared_ptr<Mesh> mesh);
+    void add_texture(std::shared_ptr<const Texture> texture);
     void render(const RenderContext& context);
 };
 
