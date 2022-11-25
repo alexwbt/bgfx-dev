@@ -1,26 +1,14 @@
 
 add_library(axgl)
 
+
+file(GLOB_RECURSE source_cpp_files RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "src/*.cpp")
+file(GLOB_RECURSE shader_files RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "res/shader/*.sc")
+
 target_sources(axgl
     PRIVATE
-    ./src/window.cpp
-
-    ./src/render/mesh.cpp
-    ./src/render/model.cpp
-    ./src/render/camera.cpp
-    ./src/render/texture.cpp
-    ./src/render/shader_program.cpp
-
-    ./src/controller/camera_controller.cpp
-
-    ./src/event/event_loop.cpp
-    ./src/event/component/glfw.cpp
-    ./src/event/component/bgfx.cpp
-
-    ./res/shader/fs_pc.sc
-    ./res/shader/vs_pc.sc
-    ./res/shader/fs_pntt.sc
-    ./res/shader/vs_pntt.sc
+    ${source_cpp_files}
+    ${shader_files}
 )
 
 target_include_directories(axgl

@@ -43,7 +43,8 @@ public:
     void update()
     {
         auto now = std::chrono::high_resolution_clock::now();
-        delta_time += (double)std::chrono::duration_cast<std::chrono::nanoseconds>(now - start_time).count() / kTimestep;
+        auto delta = std::chrono::duration_cast<std::chrono::nanoseconds>(now - start_time).count();
+        delta_time += static_cast<double>(delta) / kTimestep;
         start_time = now;
 
         if (delta_time < 0)

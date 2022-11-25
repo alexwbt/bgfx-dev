@@ -57,11 +57,11 @@ public:
         auto cube_mesh = std::make_shared<gl::render::Mesh>(pc_shader, cube_vertices, cube_indices);
         cube_.set_mesh(cube_mesh);
 
-        auto texture = std::make_shared<gl::render::Texture>("s_texColor", "./res/texture/fieldstone-rgba.tga");
-        auto normal_map = std::make_shared<gl::render::Texture>("s_texNormal", "./res/texture/fieldstone-n.tga");
+        // auto texture = std::make_shared<gl::render::Texture>("s_texColor", "./res/texture/fieldstone-rgba.tga");
+        // auto normal_map = std::make_shared<gl::render::Texture>("s_texNormal", "./res/texture/fieldstone-n.tga");
         auto pntt_shader = std::make_shared<gl::render::shader::PNTT>();
         auto textured_cube_mesh = std::make_shared<gl::render::Mesh>(pntt_shader, textured_cube_vertices, textured_cube_indices);
-        textured_cube_.set_mesh(cube_mesh);
+        textured_cube_.set_mesh(textured_cube_mesh);
         // textured_cube_.add_texture(texture);
         // textured_cube_.add_texture(normal_map);
         textured_cube_.translation.x += 10;
@@ -106,8 +106,8 @@ public:
             glfwGetKey(window_->get_glfw_window(), GLFW_KEY_SPACE) == GLFW_PRESS,
             glfwGetKey(window_->get_glfw_window(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS });
 
-        // cube_.rotation += glm::vec3(-0.01f, 0, -0.01f);
-        // cube_.update_transform();
+        cube_.rotation += glm::vec3(0.01f, 0, 0.01f);
+        cube_.update_transform();
     }
 
     void render()
@@ -121,6 +121,7 @@ public:
         bgfx::touch(view_id_);
         camera_->use(context);
         cube_.render(context);
+        textured_cube_.render(context);
         bgfx::frame();
     }
 };
