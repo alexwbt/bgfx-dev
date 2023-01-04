@@ -56,12 +56,13 @@ namespace glfw
         ~Window();
 
     public:
-        void set_event_listener(std::shared_ptr<EventListener> event_listener);
-
         void set_title(const std::string& title);
+        void set_event_listener(std::shared_ptr<EventListener> event_listener);
 
         GLFWwindow* get_glfw_window() const;
         bool is_destroyed() const { return destroyed_; }
+
+        bool key_pressed(int key) const;
 
     private:
         void destroy();

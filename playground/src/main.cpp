@@ -57,13 +57,13 @@ public:
         auto cube_mesh = std::make_shared<gl::render::Mesh>(pc_shader, cube_vertices, cube_indices);
         cube_.set_mesh(cube_mesh);
 
-        // auto texture = std::make_shared<gl::render::Texture>("s_texColor", "./res/texture/fieldstone-rgba.tga");
-        // auto normal_map = std::make_shared<gl::render::Texture>("s_texNormal", "./res/texture/fieldstone-n.tga");
+        auto texture = std::make_shared<gl::render::Texture>("s_texColor", "./res/texture/fieldstone-rgba.dds");
+        auto normal_map = std::make_shared<gl::render::Texture>("s_texNormal", "./res/texture/fieldstone-n.dds");
         auto pntt_shader = std::make_shared<gl::render::shader::PNTT>();
         auto textured_cube_mesh = std::make_shared<gl::render::Mesh>(pntt_shader, textured_cube_vertices, textured_cube_indices);
         textured_cube_.set_mesh(textured_cube_mesh);
-        // textured_cube_.add_texture(texture);
-        // textured_cube_.add_texture(normal_map);
+        textured_cube_.add_texture(texture);
+        textured_cube_.add_texture(normal_map);
         textured_cube_.translation.x += 10;
         textured_cube_.update_transform();
 
@@ -99,12 +99,12 @@ public:
     void tick()
     {
         camera_controller_.move({
-            glfwGetKey(window_->get_glfw_window(), GLFW_KEY_W) == GLFW_PRESS,
-            glfwGetKey(window_->get_glfw_window(), GLFW_KEY_S) == GLFW_PRESS,
-            glfwGetKey(window_->get_glfw_window(), GLFW_KEY_D) == GLFW_PRESS,
-            glfwGetKey(window_->get_glfw_window(), GLFW_KEY_A) == GLFW_PRESS,
-            glfwGetKey(window_->get_glfw_window(), GLFW_KEY_SPACE) == GLFW_PRESS,
-            glfwGetKey(window_->get_glfw_window(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS });
+            window_->key_pressed(GLFW_KEY_W),
+            window_->key_pressed(GLFW_KEY_S),
+            window_->key_pressed(GLFW_KEY_D),
+            window_->key_pressed(GLFW_KEY_A),
+            window_->key_pressed(GLFW_KEY_SPACE),
+            window_->key_pressed(GLFW_KEY_LEFT_CONTROL) });
 
         cube_.rotation += glm::vec3(0.01f, 0, 0.01f);
         cube_.update_transform();

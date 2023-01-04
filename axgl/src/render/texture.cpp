@@ -15,9 +15,10 @@ bgfx::TextureHandle Texture::loadTexture2d(const std::string& file, uint64_t fla
     bimg::ImageContainer image_container;
     bimg::imageParse(image_container, &data[0], size);
 
-    if (!bgfx::isTextureValid(0, false, image_container.m_numLayers,
-        bgfx::TextureFormat::Enum(image_container.m_format), flags)) {
+    auto format = static_cast<bgfx::TextureFormat::Enum>(image_container.m_format);
 
+    if (!bgfx::isTextureValid(0, false, image_container.m_numLayers, format, flags))
+    {
         SPDLOG_ERROR("Invalid texture. ({})", file);
         throw std::runtime_error("Invalid texture. (" + file + ")");
     }
@@ -25,11 +26,11 @@ bgfx::TextureHandle Texture::loadTexture2d(const std::string& file, uint64_t fla
     return bgfx::createTexture2D(
         static_cast<uint16_t>(image_container.m_width),
         static_cast<uint16_t>(image_container.m_height),
-        1 < image_container.m_numMips,
-        image_container.m_numLayers,
+        false,
+        1,
         bgfx::TextureFormat::Enum(image_container.m_format),
         flags,
-        bgfx::copy(&data[0], size)
+        bgfx::copy(image_container.m_data, image_container.m_size)
     );
 }
 
