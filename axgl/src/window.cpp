@@ -146,19 +146,24 @@ namespace glfw
         destroy();
     }
 
-    void Window::set_event_listener(std::shared_ptr<EventListener> event_listener)
-    {
-        event_listener_ = std::move(event_listener);
-    }
-
     void Window::set_title(const std::string& title)
     {
         glfwSetWindowTitle(glfw_window_, title.c_str());
     }
 
+    void Window::set_event_listener(std::shared_ptr<EventListener> event_listener)
+    {
+        event_listener_ = std::move(event_listener);
+    }
+
     GLFWwindow* Window::get_glfw_window() const
     {
         return glfw_window_;
+    }
+    
+    bool Window::key_pressed(int key) const
+    {
+        return glfwGetKey(glfw_window_, key) == GLFW_PRESS;
     }
 
     void Window::destroy()
